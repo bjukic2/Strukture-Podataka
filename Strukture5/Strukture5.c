@@ -174,9 +174,9 @@ int FilePostfixCalculation(double* resultDestination, char* fileName)
 	char* _buffer = NULL;
 	int value = 0;
 	int n = 0;
-	double number = 0.0;
+	double number = 0;
 	stack head = { .number = 0, .next = NULL };
-	char operation = 0;
+	char operation = '0';
 
 
 	fp = fopen(fileName, "rb");
@@ -208,23 +208,21 @@ int FilePostfixCalculation(double* resultDestination, char* fileName)
 		value = sscanf(_buffer, " %lf %n", &number, &n);
 		if (value == 1)
 		{
-			value = Push(&head, number);
-			if (value != EXIT_SUCCESS)
-			{
-				free(buffer);
-				DeleteEverything(&head);
-				return -3;
-			}
+			Push(&head, number);
 			_buffer += n;
 		}
 		else
 		{
 			sscanf(_buffer, " %c %n", &operation, &n);
+			
 			value = Operation(&head, operation);
 			if (value != EXIT_SUCCESS)
 			{
 				free(buffer);
-				DeleteEverything(&head);
+
+				while(head.next != NULL)
+					DeleteAfter(&head);
+				
 				return -4;
 			}
 			_buffer += n;
@@ -235,15 +233,12 @@ int FilePostfixCalculation(double* resultDestination, char* fileName)
 
 	value = Pop(resultDestination, &head);
 	if (value != EXIT_SUCCESS)
-	{
-		DeleteEverything(&head);
-		return -5;
-	}
+		while (head.next != NULL)
+			return -5;
 
-	if (head.next)
+	if (head.next != NULL)
 	{
 		printf("Postfix invalid!\n");
-		DeleteEverything(&head);
 		return -6;
 	}
 
