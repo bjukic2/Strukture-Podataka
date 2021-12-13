@@ -1,0 +1,3 @@
+﻿  Strukture7.c
+C:\Users\bruno\source\repos\Strukture7\Strukture7.c(195,18): warning C4133: 'function': incompatible types - from 'Position' to 'const char *'
+  Strukture7.vcxproj -> C:\Users\bruno\source\repos\Strukture7\Debug\Strukture7.exe
