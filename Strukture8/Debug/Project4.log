@@ -1,0 +1,3 @@
+﻿  Strukture8.c
+C:\Users\bruno\source\repos\Project4\Strukture8.c(54,11): warning C4477: 'printf' : format string '%d' requires an argument of type 'int', but variadic argument 2 has type 'StabloP'
+  Project4.vcxproj -> C:\Users\bruno\source\repos\Project4\Debug\Project4.exe
