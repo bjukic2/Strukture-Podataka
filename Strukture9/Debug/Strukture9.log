@@ -1,0 +1,5 @@
+﻿  Strukture9.c
+C:\Users\bruno\source\repos\Strukture9\Strukture9.c(151,31): warning C4047: 'function': 'TreeP' differs in levels of indirection from 'int'
+C:\Users\bruno\source\repos\Strukture9\Strukture9.c(151,27): warning C4024: 'PrintInDat': different types for formal and actual parameter 1
+C:\Users\bruno\source\repos\Strukture9\Strukture9.c(152,25): warning C4133: 'function': incompatible types - from 'char *' to 'FILE *const '
+  Strukture9.vcxproj -> C:\Users\bruno\source\repos\Strukture9\Debug\Strukture9.exe
