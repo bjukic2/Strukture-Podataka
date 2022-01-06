@@ -1,0 +1,6 @@
+﻿  Strukture10.c
+C:\Users\bruno\source\repos\Strukture10\Strukture10.c(42,20): warning C4047: 'function': 'PositionT' differs in levels of indirection from 'PositionT *'
+C:\Users\bruno\source\repos\Strukture10\Strukture10.c(42,15): warning C4024: 'PrintInorder': different types for formal and actual parameter 1
+C:\Users\bruno\source\repos\Strukture10\Strukture10.c(179,12): warning C4047: 'return': 'PositionL' differs in levels of indirection from 'int'
+C:\Users\bruno\source\repos\Strukture10\Strukture10.c(218,14): warning C4047: 'return': 'int' differs in levels of indirection from 'void *'
+  Strukture10.vcxproj -> C:\Users\bruno\source\repos\Strukture10\Debug\Strukture10.exe
