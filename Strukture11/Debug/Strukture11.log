@@ -1,0 +1,3 @@
+﻿  Strukture11.c
+C:\Users\bruno\source\repos\Strukture11\Strukture11.c(148,13): warning C4047: 'return': 'PositionT' differs in levels of indirection from 'int'
+  Strukture11.vcxproj -> C:\Users\bruno\source\repos\Strukture11\Debug\Strukture11.exe
