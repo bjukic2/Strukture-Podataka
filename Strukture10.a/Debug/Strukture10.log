@@ -1,2 +1,3 @@
 ﻿  Strukture10.c
-  Strukture10.vcxproj -> C:\Users\bruno\source\repos\Strukture10\Debug\Strukture10.exe
+C:\Users\bruno\Desktop\Ja\Git\Strukture-Podataka\Strukture10.a\Strukture10.c(130,13): warning C4047: 'return': 'PositionT' differs in levels of indirection from 'int'
+  Strukture10.vcxproj -> C:\Users\bruno\Desktop\Ja\Git\Strukture-Podataka\Strukture10.a\Debug\Strukture10.exe

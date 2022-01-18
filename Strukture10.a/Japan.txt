@@ -1,4 +1,0 @@
-Tokio		35 000 000
-Yokohama	3 500 000
-Osaka		2 700 000
-Nagoja		2 200 000	

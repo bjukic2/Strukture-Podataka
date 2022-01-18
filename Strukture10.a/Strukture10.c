@@ -4,158 +4,165 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define LENGHT 1024
+#define LENGTH 1024
 
 struct _cities;
 typedef struct _cities* PositionT;
-typedef struct _cities {
-	char name[LENGHT];
+typedef struct _cities
+{
+	char city_name[LENGTH];
 	int population;
-	PositionT left;
 	PositionT right;
+	PositionT left;
 }cities;
 
-struct _states;
-typedef struct _states* PositionL;
-typedef struct _states {
-	char name[LENGHT];
-	PositionL next;
+struct _countries;
+typedef struct _countries* PositionL;
+typedef struct _countries
+{
+	char country_name[LENGTH];
 	PositionT city;
-}states;
+	PositionL next;
+}countries;
 
-PositionL CreateElInList(char* Name);
-int InsertElInList(PositionL head, PositionL newEl);
-PositionT TreeFromFile(char* fileName);
-PositionT InsertElInTree(PositionT current, PositionT newEl);
-PositionT CreateElInTree(char* Name, int population);
-int ListFromFile(PositionL head, char* fileName);
-int PrintInorder(PositionT root);
-int PrintList(PositionL head);
+int CreateCountry(PositionL head, char* countryName, char* cityFileName);
+int CreateCity(PositionT root, char* cityFileName);
+PositionT AddElInTree(PositionT root, char* name, int population);
+int PrintCountries(PositionL head);
+int PrintCities(PositionT root);
+int FindCity(PositionT root, int population);
+int Find(PositionL head, char* countryName, int population);
 
 int main()
 {
-	states head = { .name = { 0 }, .next = NULL, .city = NULL };
-	char* fileName = "drzave.txt";
-
-	ListFromFile(&head, fileName);
-
-	PrintList(&head);
-
-	return EXIT_SUCCESS;
-}
-
-PositionL CreateElInList(char* Name)
-{
-	PositionL newEl = NULL;
-
-	newEl = (PositionL)malloc(sizeof(states));
-	if (!newEl)
-	{
-		perror("Can't allocate memory!");
-		return NULL;
-	}
-
-	strcpy(newEl->name, Name);
-	newEl->city = NULL;
-	newEl->next = NULL;
-
-	return newEl;
-}
-
-int InsertElInList(PositionL head, PositionL newEl)
-{
-	PositionL temp = head;
-
-	while ((temp->next != NULL) && (strcmp(temp->next->name, newEl->name) < 0))
-		temp = temp->next;
-
-	newEl->next = temp->next;
-	temp->next = newEl;
-	newEl->city = TreeFromFile(newEl->name);
-
-	return EXIT_SUCCESS;
-}
-
-PositionT TreeFromFile(char* fileName)
-{
-	FILE* fp = NULL; 
-	char _fileName[LENGHT] = { 0 };
-	char buffer[LENGHT] = { 0 };
-	char* _buffer = NULL;
-	char city_name[LENGHT] = { 0 };
-	int n = 0;
+	countries head = { .country_name = { 0 }, .next = NULL, .city = NULL };
+	FILE* fp = NULL;
+	char countryName[LENGTH] = { 0 }, cityFileName[LENGTH] = { 0 };
 	int population = 0;
-	PositionT temp = NULL;
 
-	strcpy(_fileName, fileName);
-	strcat(_fileName, ".txt");
-
-	fp = fopen(_fileName, "r");
+	fp = fopen("countries.txt", "r");
 	if (!fp)
 	{
-		perror("Can't open file!");
-		return NULL;
+		perror("Can't read file!\n");
+		return -1;
 	}
 
-	while (!feof(fp)) 
+	while (!feof(fp))
 	{
-		fgets(buffer, LENGHT, fp);
-		_buffer = buffer;
+		fscanf(fp, " %s %s", countryName, cityFileName);
 
-		while (strlen(_buffer))
-		{
-			if (sscanf(_buffer, " %s %d %n", city_name, &population, &n) == 2)
-				temp = InsertElInTree(temp, CreateElInTree(city_name, population));
-			_buffer += n;
-		}
+		CreateCountry(&head, countryName, cityFileName);
 	}
 
 	fclose(fp);
 
-	return temp;
+	PrintCountries(head.next);
+	printf("\nType in country you want to search: ");
+	scanf(" %s", countryName);
+	printf("\nType in population: ");
+	scanf("%d", &population);
+
+	Find(head.next, countryName, population);
+
+
+	return EXIT_SUCCESS;
 }
 
-PositionT InsertElInTree(PositionT current, PositionT newEl)
+int Find(PositionL head, char* countryName, int population)
 {
-	if (current == NULL)
-		return newEl;
-	
-	if ((current->population) > (newEl->population))
-		current->right = InsertElInTree(current->right, newEl);
-	else if ((current->population) < (newEl->population))
-		current->left = InsertElInTree(current->left, newEl);
+	while (head != NULL && strcmp(head->country_name, countryName) != 0)
+		head = head->next;
 
-	return current;
+	FindCity(head->city, population);
+
+	return EXIT_SUCCESS;
 }
 
-PositionT CreateElInTree(char* Name, int population)
+int FindCity(PositionT root, int population)
+{
+	if (root != NULL)
+	{
+		if (root->population > population)
+			printf("%s", root->city_name);
+
+		FindCity(root->left, population);
+		FindCity(root->right, population);
+	}
+
+	return EXIT_SUCCESS;
+}
+
+int PrintCities(PositionT root)
+{
+	if (root != NULL)
+	{
+		PrintCities(root->left);
+		printf(" %s %d", root->city_name, root->population);
+		PrintCities(root->right);
+	}
+
+	return EXIT_SUCCESS;
+}
+
+int PrintCountries(PositionL head)
+{
+	while (!head->next)
+	{
+		printf(" %s\n", head->country_name);
+		PrintCities(head->city);
+
+		head = head->next;
+	}
+
+	return EXIT_SUCCESS;
+}
+
+PositionT AddElInTree(PositionT root, char* name, int population)
 {
 	PositionT newEl = NULL;
 
-	newEl = (PositionT)malloc(sizeof(cities));
-	if (!newEl)
+	if (root = NULL)
 	{
-		perror("Can't allocate memory!");
-		return NULL;
+		newEl = (PositionT)malloc(sizeof(cities));
+		if (!newEl)
+		{
+			perror("Can't allocate memory!");
+			return -1;
+		}
+
+		strcpy(newEl->city_name, name);
+		newEl->population = population;
+		newEl->left = NULL;
+		newEl->right = NULL;
+
+		return newEl;
 	}
 
-	strcpy(newEl->name, Name);
-	newEl->population = population;
-	newEl->left = NULL;
-	newEl->right = NULL;
+	else if (root->population > population)
+		root->left = AddElInTree(root->left, name, population);
 
-	return newEl;
+	else if (root->population < population)
+		root->right = AddElInTree(root->right, name, population);
+
+	else if (root->population == population)
+	{
+		if (strcmp(root->city_name, name) > 0)
+			root->left = AddElInTree(root->left, name, population);
+
+		else
+			root->right = AddElInTree(root->right, name, population);
+	}
+
+	return root;
 }
 
-int ListFromFile(PositionL head, char* fileName)
+int CreateCity(PositionT root, char* cityFileName)
 {
-	FILE* fp = NULL; 
-	char buffer[LENGHT] = { 0 };
-	char* _buffer = NULL;
-	char state_name[LENGHT] = { 0 };
-	int n = 0;
+	char cityName[LENGTH];
+	int population = 0;
+	FILE* fp = NULL;
 
-	fp = fopen(fileName, "r");
+	fp = fopen(cityFileName, "r");
 	if (!fp)
 	{
 		perror("Can't open file!");
@@ -164,17 +171,8 @@ int ListFromFile(PositionL head, char* fileName)
 
 	while (!feof(fp))
 	{
-		fgets(buffer, LENGHT, fp);
-		_buffer = buffer;
-
-		while (strlen(_buffer))
-		{
-			if (sscanf(_buffer, " %s %d", state_name, &n) == 1)
-			{
-				InsertElInList(head, CreateElInList(state_name));
-			}
-			_buffer += n;
-		}
+		fscanf(fp, " %s %d", cityName, &population);
+		root = AddElInTree(root, cityName, population);
 	}
 
 	fclose(fp);
@@ -182,27 +180,39 @@ int ListFromFile(PositionL head, char* fileName)
 	return EXIT_SUCCESS;
 }
 
-int PrintInorder(PositionT root)
+int CreateCountry(PositionL head, char* countryName, char* cityFileName)
 {
-	if (root != NULL)
+	PositionL newElInList = NULL;
+	PositionT newElInTree = NULL;
+
+	newElInList = (PositionL)malloc(sizeof(countries));
+	if (!newElInList)
 	{
-		PrintInorder(root->left);
-		printf("%s %d", root->name, root->population);
-		PrintInorder(root->right);
+		perror("Can't allocate memory!");
+		return -1;
 	}
 
-	return EXIT_SUCCESS;
-}
-
-int PrintList(PositionL head)
-{
-	while (head)
+	newElInTree = (PositionT)malloc(sizeof(cities));
+	if (!newElInTree)
 	{
-		printf(" %s\n", head->name);
-		PrintInorder(head->city);
+		perror("Can't allocate memory!");
+		return -1;
+	}
+
+	strcpy(newElInTree->city_name, "");
+	newElInTree->population = 0;
+	newElInTree->left = NULL;
+	newElInTree->right = NULL;
+
+	strcpy(newElInList->country_name, countryName);
+	newElInList->city = newElInTree;
+	CreateCity(newElInList->city, cityFileName);
+
+	while (head->next != NULL && strcmp(head->next->country_name, countryName) < 0)
 		head = head->next;
-	}
+
+	newElInList->next = head->next;
+	head->next = newElInList;
 
 	return EXIT_SUCCESS;
 }
-
