@@ -1,4 +1,4 @@
-Hrvatska	gradoviHrv.txt
-Italija	gradoviIta.txt
-Njemacka	gradoviNjem.txt
-Japan	gradoviJap.txt
+Hrvatska gradoviHrv.txt
+Italija gradoviIta.txt
+Njemacka gradoviNjem.txt
+Japan gradoviJap.txt
